@@ -2,12 +2,12 @@
 # -*- coding: utf-8 -*-
 # 
 # Filename: utils.py
-# Project: fuzzy_utils
+# Project: fuzzy_types
 # Author: Brian Cherinka
 # Created: Tuesday, 7th April 2020 3:34:46 pm
 # License: BSD 3-clause "New" or "Revised" License
 # Copyright (c) 2020 Brian Cherinka
-# Last Modified: Wednesday, 8th April 2020 5:01:50 pm
+# Last Modified: Wednesday, 8th April 2020 5:48:32 pm
 # Modified By: Brian Cherinka
 
 
@@ -15,7 +15,7 @@ from __future__ import print_function, division, absolute_import
 import six
 from fuzzywuzzy import fuzz as fuzz_fuzz
 from fuzzywuzzy import process as fuzz_proc
-from fuzzy_utils import config
+from fuzzy_types import config
 
 
 def get_best_fuzzy(value, choices, min_score=None, scorer=fuzz_fuzz.WRatio, return_score=False):

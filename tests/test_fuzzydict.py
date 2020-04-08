@@ -7,13 +7,13 @@
 # Created: Wednesday, 8th April 2020 2:36:33 pm
 # License: BSD 3-clause "New" or "Revised" License
 # Copyright (c) 2020 Brian Cherinka
-# Last Modified: Wednesday, 8th April 2020 4:32:19 pm
+# Last Modified: Wednesday, 8th April 2020 5:48:32 pm
 # Modified By: Brian Cherinka
 
 
 from __future__ import print_function, division, absolute_import
 import pytest
-from fuzzy_utils.fuzzy import FuzzyDict, FuzzyOrderedDict
+from fuzzy_types.fuzzy import FuzzyDict, FuzzyOrderedDict
 
 
 real = {'apple': 1, 'banana': 2, 'orange': 3, 'pear': 4}

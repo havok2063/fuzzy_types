@@ -7,13 +7,13 @@
 # Created: Wednesday, 8th April 2020 4:24:11 pm
 # License: BSD 3-clause "New" or "Revised" License
 # Copyright (c) 2020 Brian Cherinka
-# Last Modified: Wednesday, 8th April 2020 4:32:39 pm
+# Last Modified: Wednesday, 8th April 2020 5:48:32 pm
 # Modified By: Brian Cherinka
 
 
 from __future__ import print_function, division, absolute_import
 import pytest
-from fuzzy_utils.fuzzy import FuzzyList
+from fuzzy_types.fuzzy import FuzzyList
 
 
 real = ['apple', 'banana', 'orange', 'pear']

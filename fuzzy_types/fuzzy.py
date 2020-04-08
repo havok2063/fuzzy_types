@@ -2,12 +2,12 @@
 # -*- coding: utf-8 -*-
 # 
 # Filename: structs.py
-# Project: fuzzy_utils
+# Project: fuzzy_types
 # Author: Brian Cherinka
 # Created: Tuesday, 7th April 2020 2:15:25 pm
 # License: BSD 3-clause "New" or "Revised" License
 # Copyright (c) 2020 Brian Cherinka
-# Last Modified: Wednesday, 8th April 2020 4:33:41 pm
+# Last Modified: Wednesday, 8th April 2020 5:48:32 pm
 # Modified By: Brian Cherinka
 
 
@@ -16,7 +16,7 @@ from collections import OrderedDict
 
 import abc
 import six
-from fuzzy_utils.utils import get_best_fuzzy
+from fuzzy_types.utils import get_best_fuzzy
 
 
 class FuzzyBase(abc.ABC):
