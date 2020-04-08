@@ -7,7 +7,7 @@
 # Created: Tuesday, 7th April 2020 1:55:50 pm
 # License: BSD 3-clause "New" or "Revised" License
 # Copyright (c) 2020 Brian Cherinka
-# Last Modified: Wednesday, 8th April 2020 5:48:32 pm
+# Last Modified: Wednesday, 8th April 2020 6:11:43 pm
 # Modified By: Brian Cherinka
 
 
@@ -17,6 +17,6 @@ from fuzzy_types.configuration import get_config, get_package_version
 
 NAME = 'fuzzy_types'
 
-config = get_config('fuzzy')
+config = get_config(NAME)
 
 __version__ = get_package_version(path=__file__, package_name=NAME)

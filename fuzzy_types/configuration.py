@@ -10,12 +10,11 @@ import inspect
 import os
 import pathlib
 import pkg_resources
-import pathlib
 import configparser
 import yaml
 
 
-__all__ = ['read_yaml_file', 'merge_config', 'get_config']
+__all__ = ['read_yaml_file', 'merge_config', 'get_config', 'get_package_version']
 
 
 def read_yaml_file(path):
