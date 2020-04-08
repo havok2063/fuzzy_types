@@ -7,7 +7,7 @@
 # Created: Wednesday, 8th April 2020 2:36:33 pm
 # License: BSD 3-clause "New" or "Revised" License
 # Copyright (c) 2020 Brian Cherinka
-# Last Modified: Wednesday, 8th April 2020 3:39:41 pm
+# Last Modified: Wednesday, 8th April 2020 4:32:19 pm
 # Modified By: Brian Cherinka
 
 
@@ -45,6 +45,7 @@ class TestDict(object):
     def test_real_dict(self):
         assert_exact(real)
         assert not ('appl' in real)
+        assert not hasattr(real, 'orange')
 
     @pytest.mark.parametrize('dd', [(fuzzy), (ordered)], ids=['fuzzy', 'fuzzyord'])
     def test_fuzzy_dict(self, dd):
