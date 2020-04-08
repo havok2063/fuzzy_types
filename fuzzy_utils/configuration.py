@@ -9,7 +9,9 @@
 import inspect
 import os
 import pathlib
-
+import pkg_resources
+import pathlib
+import configparser
 import yaml
 
 
@@ -120,3 +122,44 @@ def get_config(name, config_file=None, allow_user=True, user_path=None,
         return merge_config(user_config, config)
     else:
         return user_config
+
+
+def get_package_version(path=None, package_name=None):
+    """Returns the version of a package.
+
+    First tries to determine if a metadata file is available and parses it.
+    Otherwise, tries to use the egg/wheel information if the package has
+    been installed.
+
+    Parameters
+    ----------
+    path : str
+        The path relative to which to search for metadata files.
+    package_name : str
+        The name of the package.
+
+    Returns
+    -------
+    version : str
+        The version string, or `None` if it cannot be found.
+
+    """
+
+    assert path or package_name, 'either path or package_name are needed.'
+
+    if path:
+        path = pathlib.Path(path).absolute()
+        metadata_file = [p / 'setup.cfg' for p in path.parents if list(p.glob('setup.cfg'))][0]
+        setupcfg = configparser.ConfigParser()
+        setupcfg.read(metadata_file)
+        if (setupcfg.has_section('metadata') and
+                setupcfg.has_option('metadata', 'version')):
+            return setupcfg.get('metadata', 'version')
+
+    if package_name:
+        try:
+            return pkg_resources.get_distribution(package_name).version
+        except pkg_resources.DistributionNotFound:
+            return None
+
+    return None
