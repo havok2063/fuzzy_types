@@ -16,9 +16,9 @@ from pkg_resources import parse_version
 try:
     from fuzzy_types import __version__
 except ModuleNotFoundError:
-    from fuzzy_types.configuration import get_package_version
-    __version__ = get_package_version(__file__, 'fuzzy-types') or 'dev'
-
+    #from fuzzy_types.configuration import get_package_version
+    #__version__ = get_package_version(__file__, 'fuzzy-types') or 'dev'
+    __version__ = '0.1.0-alpha'
 
 # Are we building in RTD?
 on_rtd = os.environ.get('READTHEDOCS') == 'True'
