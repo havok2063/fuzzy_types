@@ -1,3 +1,4 @@
+
 # This is a basic workflow to help you get started with Actions
 
 name: Build Sphinx Documentation
@@ -30,3 +31,5 @@ jobs:
         docs-folder: "docs/sphinx/"  # default is docs/
         # The command used to build your documentation.
         build-command: make html  # optional, default is make html
+        # Pre-build command
+        pre-build-command: "pip install .[docs]"
