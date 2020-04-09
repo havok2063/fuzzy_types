@@ -7,7 +7,7 @@
 # Created: Tuesday, 7th April 2020 2:15:25 pm
 # License: BSD 3-clause "New" or "Revised" License
 # Copyright (c) 2020 Brian Cherinka
-# Last Modified: Wednesday, 8th April 2020 5:48:32 pm
+# Last Modified: Thursday, 9th April 2020 4:29:17 pm
 # Modified By: Brian Cherinka
 
 
@@ -21,11 +21,11 @@ from fuzzy_types.utils import get_best_fuzzy
 
 class FuzzyBase(abc.ABC):
 
-    def __init__(self, the_dict, use_fuzzy=None, dottable=True, base=None):
+    def __init__(self, the_items, use_fuzzy=None, dottable=True, base=None):
         self.use_fuzzy = use_fuzzy or get_best_fuzzy
         self._dottable = dottable
         self._base = base
-        self._base.__init__(self, the_dict)
+        self._base.__init__(self, the_items)
 
     @abc.abstractmethod
     def __getattr__(self, value):
