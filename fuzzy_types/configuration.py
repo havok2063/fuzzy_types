@@ -104,7 +104,7 @@ def get_config(name, config_file=None, allow_user=True, user_path=None,
     if user_path is not None:
         user_path = os.path.expanduser(os.path.expandvars(user_path))
     else:
-        user_path = os.path.expanduser('~/.config/{0}/{0}.yml'.format(name))
+        user_path = os.path.expanduser('~/.fuzzy/{0}.yml'.format(name))
 
     if config_envvar in os.environ:
         custom_config_fn = os.environ[config_envvar]

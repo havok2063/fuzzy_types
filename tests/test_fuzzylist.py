@@ -7,7 +7,7 @@
 # Created: Wednesday, 8th April 2020 4:24:11 pm
 # License: BSD 3-clause "New" or "Revised" License
 # Copyright (c) 2020 Brian Cherinka
-# Last Modified: Friday, 10th April 2020 5:32:35 pm
+# Last Modified: Friday, 10th April 2020 7:01:11 pm
 # Modified By: Brian Cherinka
 
 
@@ -80,3 +80,9 @@ class TestListFails(object):
         assert cm.type == ValueError
         assert "Cannot find a good match for 'mandarin'. Your input value is too ambiguous." in str(
             cm.value)
+
+    def test_tooshort(self):
+        with pytest.raises(AssertionError) as cm:
+            fuzzy['ba']
+        assert cm.type == AssertionError
+        assert 'Your fuzzy search value must be at least 3 characters long.' in str(cm.value)

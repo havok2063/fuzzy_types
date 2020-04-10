@@ -7,7 +7,7 @@
 # Created: Tuesday, 7th April 2020 2:15:25 pm
 # License: BSD 3-clause "New" or "Revised" License
 # Copyright (c) 2020 Brian Cherinka
-# Last Modified: Friday, 10th April 2020 6:32:13 pm
+# Last Modified: Friday, 10th April 2020 6:56:21 pm
 # Modified By: Brian Cherinka
 
 
@@ -22,7 +22,6 @@ __all__ = ['FuzzyList', 'FuzzyDict', 'FuzzyOrderedDict']
 
 
 class FuzzyBase(abc.ABC):
-    ''' stuff of '''
     _base = None
 
     def __init__(self, the_items, use_fuzzy=None, dottable=True):
@@ -106,17 +105,58 @@ class FuzzyBaseDict(FuzzyBase):
 
 
 class FuzzyDict(FuzzyBaseDict, dict):
-    ''' A dotable dictionary that uses fuzzywuzzy to select the key. '''
+    ''' A dotable dictionary that uses fuzzywuzzy to select the key.
+    
+    Parameters:
+        the_items (dict):
+            A dictionary of items to make fuzzy
+        use_fuzzy (func):
+            The function used to perform the fuzzy-matching.
+            Default is :func:`fuzzy_types.utils.get_best_fuzzy`.
+        dottable (bool):
+            If False, turns off dottable attributes.  Default is True.
+    
+    Returns:
+        A python dictionary with fuzzy keys
+    '''
     _base = dict
 
 
 class FuzzyOrderedDict(FuzzyBaseDict, OrderedDict):
-    ''' A dotable ordered dictionary that uses fuzzywuzzy to select the key. '''
+    ''' A dotable ordered dictionary that uses fuzzywuzzy to select the key.
+
+    Parameters:
+        the_items (dict):
+            A dictionary of items to make fuzzy
+        use_fuzzy (func):
+            The function used to perform the fuzzy-matching.
+            Default is :func:`fuzzy_types.utils.get_best_fuzzy`.
+        dottable (bool):
+            If False, turns off dottable attributes.  Default is True.
+    
+    Returns:
+        A python ordered dictionary with fuzzy keys
+        
+    '''
     _base = OrderedDict
 
 
 class FuzzyList(FuzzyBase, list):
-    ''' A dottable python list that uses fuzzywuzzy to select a string item '''
+    ''' A dottable python list that uses fuzzywuzzy to select a string item
+
+    Parameters:
+        the_items (list):
+            A list of items to make fuzzy
+        use_fuzzy (func):
+            The function used to perform the fuzzy-matching.
+            Default is :func:`fuzzy_types.utils.get_best_fuzzy`.
+        dottable (bool):
+            If False, turns off dottable attributes.  Default is True.
+    
+    Returns:
+        A python list with fuzzy items
+
+    '''
     _base = list
                 
     @property

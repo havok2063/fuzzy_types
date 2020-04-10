@@ -45,6 +45,11 @@ If a fuzzy item cannot be matched, a `ValueError` is thrown.
     >>> ll['mandarin']
     ValueError: Cannot find a good match for 'mandarin'. Your input value is too ambiguous.
 
+A fuzzy attempt must be at least 3 characters along or it throws an error.
+::
+
+    >>> ll['ba']
+    AssertionError: Your fuzzy search value must be at least 3 characters long.
 
 By default, fuzzy items are also accessible as dottable attributes.  This is enabled by default but can be 
 disabled by passing ``dottable=False`` when initializing a fuzzy object.
@@ -58,7 +63,7 @@ disabled by passing ``dottable=False`` when initializing a fuzzy object.
     AttributeError: 'list' object has no attribute 'apple'
 
 ``FuzzyDict`` and ``FuzzyOrderedDict`` behave almost the same way as ``FuzzyList``.  For dictionaries, the fuzzy matching occurs
-only for dictionary keys, and not string values.
+**only** for dictionary keys, and not dictionary values.
 ::
 
     >>> from fuzzy_types import FuzzyDict
@@ -73,4 +78,15 @@ Fuzzy Specifics
 ---------------
 
 ``fuzzywuzzy`` attempts fuzzy string-matching by computing string similarity scores and selecting out the best 
-matched score above the cutoff threshold, which is set to a default of 75.
+matched score above the cutoff threshold, which is set to a default of 75.  All ``Fuzzy`` classes use a provided convienence 
+function, :func:`fuzzy_types.utils.get_best_fuzzy`, for all fuzzy matches. This function can be replaced with any custom 
+function via the `use_fuzzy` keyword argument when initializing an object.
+
+By default, ``get_best_fuzzy`` uses a default score threshold of 75/100 and a minimum character limit of 3 when fuzzy matching.
+You can modify the default values ``get_best_fuzzy`` uses by setting the following configuration variables inside a custom
+YAML config file, located at ``~/.fuzzy/fuzzy_types.yml``.  
+
+:: 
+
+    minimum_fuzzy_characters: 3
+    fuzzy_score_cutoff: 75

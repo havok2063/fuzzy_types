@@ -7,7 +7,7 @@
 # Created: Tuesday, 7th April 2020 3:34:46 pm
 # License: BSD 3-clause "New" or "Revised" License
 # Copyright (c) 2020 Brian Cherinka
-# Last Modified: Wednesday, 8th April 2020 5:48:32 pm
+# Last Modified: Friday, 10th April 2020 6:46:29 pm
 # Modified By: Brian Cherinka
 
 
@@ -19,7 +19,20 @@ from fuzzy_types import config
 
 
 def get_best_fuzzy(value, choices, min_score=None, scorer=fuzz_fuzz.WRatio, return_score=False):
-    """Returns the best match in a list of choices using fuzzywuzzy."""
+    """ Returns the best match in a list of choices using fuzzywuzzy.
+    
+    Parameters:
+        value (str):
+            A string to match on
+        choices (list):
+            A list of string choices to match from
+        min_score (int):
+            The score cutoff threshold. The minimum score to consider when matching.
+        scorer (fuzzywuzzy.Ratio):
+            The fuzzywuzzy score ratio to use.  Default is WRatio.
+        return_score (bool):
+            If True, also returns the score value of the match
+    """
 
     assert isinstance(value, six.string_types), 'Invalid value. Must be a string.'
 
