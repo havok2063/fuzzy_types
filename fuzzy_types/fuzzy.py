@@ -7,7 +7,7 @@
 # Created: Tuesday, 7th April 2020 2:15:25 pm
 # License: BSD 3-clause "New" or "Revised" License
 # Copyright (c) 2020 Brian Cherinka
-# Last Modified: Friday, 10th April 2020 5:26:35 pm
+# Last Modified: Friday, 10th April 2020 6:32:13 pm
 # Modified By: Brian Cherinka
 
 
@@ -80,6 +80,13 @@ class FuzzyBase(abc.ABC):
 
 class FuzzyBaseDict(FuzzyBase):
 
+    def __init__(self, the_dict, use_fuzzy=None, dottable=True):
+        super(FuzzyBaseDict, self).__init__(the_dict, use_fuzzy=use_fuzzy, dottable=dottable)
+        # in case a value is another dictionary; also make it fuzzy
+        for key, val in the_dict.items():
+            if isinstance(val, dict):
+                self[key] = self.__class__(val)
+
     def __getitem__(self, value):
         if not isinstance(value, six.string_types):
             return self.get(value)
@@ -90,12 +97,12 @@ class FuzzyBaseDict(FuzzyBase):
     def __dir__(self):
         members = super(FuzzyBaseDict, self).__dir__()
         if self._dottable is True:
-            members.extend([self.mapper(i) for i in self.keys()])
+            members.extend(self.choices)
         return members
 
     @property
     def choices(self):
-        return [self.mapper(i) for i in self.keys()]
+        return [self.mapper(i) for i in self.keys() if isinstance(i, six.string_types)]
 
 
 class FuzzyDict(FuzzyBaseDict, dict):
@@ -111,10 +118,10 @@ class FuzzyOrderedDict(FuzzyBaseDict, OrderedDict):
 class FuzzyList(FuzzyBase, list):
     ''' A dottable python list that uses fuzzywuzzy to select a string item '''
     _base = list
-
+                
     @property
     def choices(self):
-        return [self.mapper(item) for item in self]
+        return [self.mapper(item) for item in self if isinstance(item, six.string_types)]
 
     def __getitem__(self, value):
         if not isinstance(value, six.string_types):
@@ -126,5 +133,5 @@ class FuzzyList(FuzzyBase, list):
     def __dir__(self):
         members = super(FuzzyList, self).__dir__()
         if self._dottable is True:
-            members.extend([self.mapper(item) for item in self])
+            members.extend(self.choices)
         return members

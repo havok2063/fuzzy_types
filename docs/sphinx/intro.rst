@@ -48,6 +48,8 @@ If a fuzzy item cannot be matched, a `ValueError` is thrown.
 
 By default, fuzzy items are also accessible as dottable attributes.  This is enabled by default but can be 
 disabled by passing ``dottable=False`` when initializing a fuzzy object.
+::
+
     >>> ll.apple
     apple
 
@@ -55,6 +57,17 @@ disabled by passing ``dottable=False`` when initializing a fuzzy object.
     >>> ll.apple
     AttributeError: 'list' object has no attribute 'apple'
 
+``FuzzyDict`` and ``FuzzyOrderedDict`` behave almost the same way as ``FuzzyList``.  For dictionaries, the fuzzy matching occurs
+only for dictionary keys, and not string values.
+::
+
+    >>> from fuzzy_types import FuzzyDict
+    >>> d = FuzzyDict({'apple':1,'banana':2,'orange':3,'pear':4})
+    >>> d.apple
+    apple
+
+    >>> d['oang']
+    >>> 3
 
 Fuzzy Specifics
 ---------------
