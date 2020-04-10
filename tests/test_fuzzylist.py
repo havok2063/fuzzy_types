@@ -7,7 +7,7 @@
 # Created: Wednesday, 8th April 2020 4:24:11 pm
 # License: BSD 3-clause "New" or "Revised" License
 # Copyright (c) 2020 Brian Cherinka
-# Last Modified: Wednesday, 8th April 2020 5:48:32 pm
+# Last Modified: Friday, 10th April 2020 5:32:35 pm
 # Modified By: Brian Cherinka
 
 
@@ -32,12 +32,13 @@ def assert_fuzzy(dd, dottable=True):
     assert dd['appl'] == 'apple'
     assert dd['paer'] == 'pear'
     assert dd['bannaa'] == 'banana'
-    assert hasattr(dd, 'orange')
-    assert dd.orange == 'orange'
     if dottable:
+        assert hasattr(dd, 'orange')
+        assert dd.orange == 'orange'
         assert 'orange' in dir(dd)
     else:
         assert 'orange' not in dir(dd)
+        assert not hasattr(dd, 'orange')
 
 
 class TestList(object):
@@ -54,6 +55,14 @@ class TestList(object):
     def test_fuzzy_nodots(self):
         fuzzy = FuzzyList(real, dottable=False)
         assert_fuzzy(fuzzy, dottable=False)
+
+    def test_copy(self):
+        kopy = fuzzy.copy()
+        assert isinstance(kopy, FuzzyList)
+
+    def test_tooriginal(self):
+        orig = fuzzy.to_original()
+        assert isinstance(orig, list)
 
 
 class TestListFails(object):

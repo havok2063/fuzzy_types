@@ -7,12 +7,13 @@
 # Created: Wednesday, 8th April 2020 2:36:33 pm
 # License: BSD 3-clause "New" or "Revised" License
 # Copyright (c) 2020 Brian Cherinka
-# Last Modified: Wednesday, 8th April 2020 5:48:32 pm
+# Last Modified: Friday, 10th April 2020 5:33:37 pm
 # Modified By: Brian Cherinka
 
 
 from __future__ import print_function, division, absolute_import
 import pytest
+from collections import OrderedDict
 from fuzzy_types.fuzzy import FuzzyDict, FuzzyOrderedDict
 
 
@@ -32,12 +33,13 @@ def assert_fuzzy(dd, dottable=True):
     assert dd['appl'] == 1
     assert dd['paer'] == 4
     assert dd['bannaa'] == 2
-    assert hasattr(dd, 'orange')
-    assert dd.orange == 3
     if dottable:
+        assert hasattr(dd, 'orange')
+        assert dd.orange == 3
         assert 'orange' in dir(dd)
     else:
         assert 'orange' not in dir(dd)
+        assert not hasattr(dd, 'orange')
 
 
 class TestDict(object):
@@ -56,7 +58,21 @@ class TestDict(object):
         fuzzy = FuzzyDict(real, dottable=False)
         assert_fuzzy(fuzzy, dottable=False)
 
+    @pytest.mark.parametrize('dd, kls', 
+                             [(fuzzy, dict), 
+                              (ordered, OrderedDict)], ids=['fuzzy', 'fuzzyord'])
+    def test_copy(self, dd, kls):
+        kopy = dd.copy()
+        assert isinstance(kopy, kls)
 
+    @pytest.mark.parametrize('dd, kls',
+                             [(fuzzy, FuzzyDict),
+                              (ordered, FuzzyOrderedDict)], ids=['fuzzy', 'fuzzyord'])
+    def test_tooriginal(self, dd, kls):
+        kopy = dd.copy()
+        assert isinstance(kopy, kls)
+        
+        
 class TestDictFails(object):
     
     @pytest.mark.parametrize('key', [('mandarin'), ('appl')], ids=['nokey', 'fuzzykey'])

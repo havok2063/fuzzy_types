@@ -7,7 +7,7 @@
 # Created: Tuesday, 7th April 2020 2:15:25 pm
 # License: BSD 3-clause "New" or "Revised" License
 # Copyright (c) 2020 Brian Cherinka
-# Last Modified: Thursday, 9th April 2020 4:29:17 pm
+# Last Modified: Friday, 10th April 2020 5:26:35 pm
 # Modified By: Brian Cherinka
 
 
@@ -18,18 +18,25 @@ import abc
 import six
 from fuzzy_types.utils import get_best_fuzzy
 
+__all__ = ['FuzzyList', 'FuzzyDict', 'FuzzyOrderedDict']
+
 
 class FuzzyBase(abc.ABC):
+    ''' stuff of '''
+    _base = None
 
-    def __init__(self, the_items, use_fuzzy=None, dottable=True, base=None):
+    def __init__(self, the_items, use_fuzzy=None, dottable=True):
         self.use_fuzzy = use_fuzzy or get_best_fuzzy
         self._dottable = dottable
-        self._base = base
         self._base.__init__(self, the_items)
 
-    @abc.abstractmethod
     def __getattr__(self, value):
-        pass
+        if self._dottable is False:
+            raise AttributeError(f"'{self._base.__name__}' object has no attribute '{value}'")
+
+        if '__' in value:
+            return super(FuzzyBase, self).__getattr__(value)
+        return self.__getitem__(value)
 
     @abc.abstractmethod
     def __getitem__(self, value):
@@ -59,12 +66,19 @@ class FuzzyBase(abc.ABC):
 
         return best in self.choices
 
+    def copy(self):
+        if self._base == OrderedDict:
+            kopied = dict(self)
+        else:
+            kopied = self._base.copy(self)
+        return self.__class__(kopied, use_fuzzy=self.use_fuzzy, dottable=self._dottable)
+
+    def to_original(self):
+        ''' Convert fuzzy object back to original Python datatype '''
+        return self._base(self)
+
 
 class FuzzyBaseDict(FuzzyBase):
-    def __getattr__(self, value):
-        if '__' in value:
-            return super(FuzzyBaseDict, self).__getattr__(value)
-        return self.__getitem__(value)
 
     def __getitem__(self, value):
         if not isinstance(value, six.string_types):
@@ -86,25 +100,17 @@ class FuzzyBaseDict(FuzzyBase):
 
 class FuzzyDict(FuzzyBaseDict, dict):
     ''' A dotable dictionary that uses fuzzywuzzy to select the key. '''
-
-    def __init__(self, the_dict, use_fuzzy=None, dottable=True):
-        super(FuzzyDict, self).__init__(the_dict, use_fuzzy=use_fuzzy, dottable=dottable, base=dict)
+    _base = dict
 
 
 class FuzzyOrderedDict(FuzzyBaseDict, OrderedDict):
     ''' A dotable ordered dictionary that uses fuzzywuzzy to select the key. '''
-
-    def __init__(self, the_dict, use_fuzzy=None, dottable=True):
-        super(FuzzyOrderedDict, self).__init__(
-            the_dict, use_fuzzy=use_fuzzy, dottable=dottable, base=OrderedDict)
+    _base = OrderedDict
 
 
 class FuzzyList(FuzzyBase, list):
     ''' A dottable python list that uses fuzzywuzzy to select a string item '''
-    
-    def __init__(self, the_list, use_fuzzy=None, dottable=True):
-        super(FuzzyList, self).__init__(
-            the_list, use_fuzzy=use_fuzzy, dottable=dottable, base=list)
+    _base = list
 
     @property
     def choices(self):
@@ -116,12 +122,6 @@ class FuzzyList(FuzzyBase, list):
 
         best = self.use_fuzzy(value, self.choices)
         return self[self.choices.index(best)]
-
-    def __getattr__(self, value):
-        if value in self.choices:
-            return self[value]
-
-        return super(FuzzyList, self).__getattribute__(value)
 
     def __dir__(self):
         members = super(FuzzyList, self).__dir__()
