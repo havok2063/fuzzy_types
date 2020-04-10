@@ -12,7 +12,7 @@ import pathlib
 import yaml
 
 
-__all__ = ['read_yaml_file', 'merge_config', 'get_config', 'get_package_version']
+__all__ = ['read_yaml_file', 'merge_config', 'get_config']
 
 
 def read_yaml_file(path):
