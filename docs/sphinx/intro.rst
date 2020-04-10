@@ -90,3 +90,24 @@ YAML config file, located at ``~/.fuzzy/fuzzy_types.yml``.
 
     minimum_fuzzy_characters: 3
     fuzzy_score_cutoff: 75
+
+Copying a ``Fuzzy`` object produces a new ``Fuzzy`` object.
+::
+
+    >>> # copy a FuzzyList
+    >>> tt = ll.copy()
+    >>> type(tt)
+    fuzzy_types.fuzzy.FuzzyList
+
+You can convert a ``Fuzzy`` object back to its original type with `to_original` method.
+::
+
+    >>> # convert a FuzzyList back to a regular python list
+    >>> old = tt.to_original()
+    >>> old
+    ['apple', 'banana', 'orange', 'pear']
+
+    >>> type(old)
+    list
+
+
