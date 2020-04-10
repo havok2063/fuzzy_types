@@ -7,16 +7,16 @@
 # Created: Tuesday, 7th April 2020 1:55:50 pm
 # License: BSD 3-clause "New" or "Revised" License
 # Copyright (c) 2020 Brian Cherinka
-# Last Modified: Wednesday, 8th April 2020 6:11:43 pm
+# Last Modified: Friday, 10th April 2020 9:41:11 am
 # Modified By: Brian Cherinka
 
 
 from __future__ import print_function, division, absolute_import
 
-from fuzzy_types.configuration import get_config, get_package_version
+from fuzzy_types.configuration import get_config
 
 NAME = 'fuzzy_types'
 
 config = get_config(NAME)
 
-__version__ = get_package_version(path=__file__, package_name=NAME)
+__version__ = '0.1.0-alpha'
