@@ -1,6 +1,6 @@
 # !/usr/bin/env python
 # -*- coding: utf-8 -*-
-# 
+#
 # Filename: structs.py
 # Project: fuzzy_types
 # Author: Brian Cherinka
@@ -18,7 +18,7 @@ import abc
 import six
 from fuzzy_types.utils import get_best_fuzzy
 
-__all__ = ['FuzzyList', 'FuzzyDict', 'FuzzyOrderedDict']
+__all__ = ['FuzzyList', 'FuzzyDict', 'FuzzyOrderedDict', 'FuzzyStr']
 
 
 class FuzzyBase(abc.ABC):
@@ -106,7 +106,7 @@ class FuzzyBaseDict(FuzzyBase):
 
 class FuzzyDict(FuzzyBaseDict, dict):
     ''' A dotable dictionary that uses fuzzywuzzy to select the key.
-    
+
     Parameters:
         the_items (dict):
             A dictionary of items to make fuzzy
@@ -115,7 +115,7 @@ class FuzzyDict(FuzzyBaseDict, dict):
             Default is :func:`fuzzy_types.utils.get_best_fuzzy`.
         dottable (bool):
             If False, turns off dottable attributes.  Default is True.
-    
+
     Returns:
         A python dictionary with fuzzy keys
     '''
@@ -133,10 +133,10 @@ class FuzzyOrderedDict(FuzzyBaseDict, OrderedDict):
             Default is :func:`fuzzy_types.utils.get_best_fuzzy`.
         dottable (bool):
             If False, turns off dottable attributes.  Default is True.
-    
+
     Returns:
         A python ordered dictionary with fuzzy keys
-        
+
     '''
     _base = OrderedDict
 
@@ -152,13 +152,13 @@ class FuzzyList(FuzzyBase, list):
             Default is :func:`fuzzy_types.utils.get_best_fuzzy`.
         dottable (bool):
             If False, turns off dottable attributes.  Default is True.
-    
+
     Returns:
         A python list with fuzzy items
 
     '''
     _base = list
-                
+
     @property
     def choices(self):
         return [self.mapper(item) for item in self if isinstance(item, six.string_types)]
@@ -175,3 +175,28 @@ class FuzzyList(FuzzyBase, list):
         if self._dottable is True:
             members.extend(self.choices)
         return members
+
+
+class FuzzyStr(str):
+    ''' A fuzzy string that uses fuzzywuzzy for equality checks
+
+    Parameters:
+        the_string (str):
+            A string to make fuzzy
+        use_fuzzy (func):
+            The function used to perform the fuzzy-matching.
+            Default is :func:`fuzzy_types.utils.get_best_fuzzy`.
+    '''
+    _base = str
+
+    def __init__(self, the_string, use_fuzzy=None):
+        self.use_fuzzy = use_fuzzy or get_best_fuzzy
+        self._base.__init__(the_string)
+
+    def __eq__(self, value):
+        try:
+            self.use_fuzzy(value, [self])
+        except ValueError:
+            return False
+        else:
+            return True
