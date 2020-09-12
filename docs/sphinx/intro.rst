@@ -4,9 +4,10 @@
 Introduction to fuzzy_types
 ===============================
 
-``fuzzy_types`` provides a set of core classes representing fuzzy Python datatypes and helper functions, using
-`fuzzywuzzy <https://github.com/seatgeek/fuzzywuzzy>`_, a package for fuzzy string matching.  ``fuzzy_types`` currently
-provides fuzzy versions of the following datatypes:
+``fuzzy_types`` provides a set of core classes representing fuzzy Python datatypes and helper
+functions, using `rapidfuzz <https://github.com/maxbachmann/rapidfuzz>`_, a package for fuzzy
+string matching package based on `fuzzywuzzy <https://github.com/seatgeek/fuzzywuzzy>`_.
+``fuzzy_types`` currently provides fuzzy versions of the following datatypes:
 
 - Python lists (:class:`fuzzy_types.fuzzy.FuzzyList`)
 - Python dicts (:class:`fuzzy_types.fuzzy.FuzzyDict`)

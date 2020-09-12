@@ -1,6 +1,6 @@
 # !/usr/bin/env python
 # -*- coding: utf-8 -*-
-# 
+#
 # Filename: utils.py
 # Project: fuzzy_types
 # Author: Brian Cherinka
@@ -13,14 +13,14 @@
 
 from __future__ import print_function, division, absolute_import
 import six
-from fuzzywuzzy import fuzz as fuzz_fuzz
-from fuzzywuzzy import process as fuzz_proc
+from rapidfuzz import fuzz as fuzz_fuzz
+from rapidfuzz import process as fuzz_proc
 from fuzzy_types import config
 
 
 def get_best_fuzzy(value, choices, min_score=None, scorer=fuzz_fuzz.WRatio, return_score=False):
     """ Returns the best match in a list of choices using fuzzywuzzy.
-    
+
     Parameters:
         value (str):
             A string to match on
