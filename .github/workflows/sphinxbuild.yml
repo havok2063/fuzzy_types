@@ -28,4 +28,4 @@ jobs:
         # The command used to build your documentation.
         build-command: make html  # optional, default is make html
         # Pre-build command
-        pre-build-command: "apt-get update -y && apt-get install -y gcc && pip install .[docs]"
+        pre-build-command: "apt-get update -y && apt-get install -y gcc && pip install .[dev,docs]"
