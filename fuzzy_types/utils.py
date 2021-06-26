@@ -56,7 +56,7 @@ def get_best_fuzzy(value, choices, min_score=None, scorer=fuzz_fuzz.WRatio, retu
             best = bests[0]
 
     if best is None:
-        raise ValueError(f'Cannot find a good match for {value}. '
+        raise ValueError(f"Cannot find a good match for '{value}'. "
                          'Your input value is too ambiguous.')
 
     return best if return_score else best[0]
