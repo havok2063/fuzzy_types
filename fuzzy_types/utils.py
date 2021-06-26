@@ -40,20 +40,23 @@ def get_best_fuzzy(value, choices, min_score=None, scorer=fuzz_fuzz.WRatio, retu
     minfuzz = config.get('minimum_fuzzy_characters', 3)
     assert len(value) >= minfuzz, f'Your fuzzy search value must be at least {minfuzz} characters long.'
 
-    bests = fuzz_proc.extractBests(value, choices, scorer=scorer, score_cutoff=min_score)
+    # returns a tuple of (best choice, score, index of choice in list or key of choice in dict)
+    bests = fuzz_proc.extract(value, choices, scorer=scorer, score_cutoff=min_score)
 
     if len(bests) == 0:
         best = None
     elif len(bests) == 1:
         best = bests[0]
     else:
+        # compare the two scores of top two choices
+        # or take the top choice
         if bests[0][1] == bests[1][1]:
             best = None
         else:
             best = bests[0]
 
     if best is None:
-        raise ValueError('Cannot find a good match for {0!r}. '
-                         'Your input value is too ambiguous.'.format(value))
+        raise ValueError(f'Cannot find a good match for {value}. '
+                         'Your input value is too ambiguous.')
 
     return best if return_score else best[0]
