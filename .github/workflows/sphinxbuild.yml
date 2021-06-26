@@ -5,11 +5,7 @@ name: Build Sphinx Documentation
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+on: [push, pull_request]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -32,4 +28,4 @@ jobs:
         # The command used to build your documentation.
         build-command: make html  # optional, default is make html
         # Pre-build command
-        pre-build-command: "apt-get update -y && apt-get install -y gcc && pip install .[docs]"
+        pre-build-command: "apt-get update -y && apt-get install -y gcc && pip install .[dev,docs]"

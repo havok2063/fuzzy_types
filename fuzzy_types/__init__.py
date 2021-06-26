@@ -1,6 +1,6 @@
 # !/usr/bin/env python
 # -*- coding: utf-8 -*-
-# 
+#
 # Filename: __init__.py
 # Project: fuzzy_types
 # Author: Brian Cherinka
@@ -20,3 +20,5 @@ NAME = 'fuzzy_types'
 config = get_config(NAME)
 
 __version__ = '0.1.2-alpha'
+
+from fuzzy_types.fuzzy import *

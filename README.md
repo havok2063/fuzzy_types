@@ -1,5 +1,5 @@
 # fuzzy_types
-A collection of "fuzzy" python datatypes and utilities, using `fuzzywuzzy` to allow for fuzzy-string matching.
+A collection of "fuzzy" python datatypes and utilities, using `rapdifuzz` to allow for fuzzy-string matching.
 
 ![Python application](https://github.com/havok2063/fuzzy_types/workflows/Python%20application/badge.svg)
 ![Build Sphinx Docs](https://github.com/havok2063/fuzzy_types/workflows/Build%20Sphinx%20Documentation/badge.svg)
