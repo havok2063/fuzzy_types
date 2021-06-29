@@ -16,22 +16,35 @@ import six
 from rapidfuzz import fuzz as fuzz_fuzz
 from rapidfuzz import process as fuzz_proc
 from fuzzy_types import config
+from typing import Callable, Union
 
 
-def get_best_fuzzy(value, choices, min_score=None, scorer=fuzz_fuzz.WRatio, return_score=False):
-    """ Returns the best match in a list of choices using fuzzywuzzy.
+def get_best_fuzzy(value: str, choices: list, min_score: int = None, 
+                   scorer: Callable = fuzz_fuzz.WRatio, return_score: bool = False) -> Union[None, str]:
+    """ Returns the best match in a list of choices using rapidfuzz.
 
-    Parameters:
-        value (str):
-            A string to match on
-        choices (list):
-            A list of string choices to match from
-        min_score (int):
-            The score cutoff threshold. The minimum score to consider when matching.
-        scorer (fuzzywuzzy.Ratio):
-            The fuzzywuzzy score ratio to use.  Default is WRatio.
-        return_score (bool):
-            If True, also returns the score value of the match
+    Parameters
+    ----------
+    value : str
+        A string to match on
+    choices : list
+        A list of string choices to match from
+    min_score : int
+        The score cutoff threshold. The minimum score to consider when matching. By default, None
+    scorer : Callable
+        The rapidfuzz score ratio to use.  By default, WRatio.
+    return_score : bool
+        If True, also returns the score value of the match.  By default, False.
+        
+    Returns
+    -------
+    Union[None, str]
+        Either None if no matches found above score, or the best match from list of choices 
+          
+    Raises
+    ------
+    ValueError
+        when rapidfuzz cannot find a single best match
     """
 
     assert isinstance(value, six.string_types), 'Invalid value. Must be a string.'
