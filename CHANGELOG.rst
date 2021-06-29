@@ -4,7 +4,7 @@
 Change Log
 ==========
 
-* :release:`0.1.3 <unreleased>`
+* :release:`0.1.3 <2021-06-29>`
 * :feature:`3` updating FuzzyList to allow for a list of objects
 * :release:`0.1.2 <2021-06-26>`
 * :feature:`1` switch core library to rapidfuzz
