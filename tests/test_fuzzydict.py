@@ -72,7 +72,13 @@ class TestDict(object):
         kopy = dd.copy()
         assert isinstance(kopy, kls)
         
-        
+    def test_fuzzy_mix(self):
+        fd = FuzzyDict({1:2, 'adfdf':5, 'stuff':'hello'})
+        assert fd[1] == 2
+        assert fd['afd'] == 5
+        assert fd['stu'] == 'hello'
+        assert fd['stuff'] == 'hello'
+                
 class TestDictFails(object):
     
     @pytest.mark.parametrize('key', [('mandarin'), ('appl')], ids=['nokey', 'fuzzykey'])

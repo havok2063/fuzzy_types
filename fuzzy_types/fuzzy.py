@@ -15,11 +15,12 @@ from __future__ import print_function, division, absolute_import
 from collections import OrderedDict
 
 import abc
+import inspect
 import six
 from fuzzy_types.utils import get_best_fuzzy
 from typing import Callable, Union, TypeVar
 
-__all__ = ['FuzzyList', 'FuzzyDict', 'FuzzyOrderedDict', 'FuzzyStr']
+__all__ = ['FuzzyBase', 'FuzzyBaseDict', 'FuzzyList', 'FuzzyDict', 'FuzzyOrderedDict', 'FuzzyStr']
 
 # types
 FL = TypeVar('FL', bound='FuzzyList')
@@ -116,7 +117,7 @@ class FuzzyBaseDict(FuzzyBase):
 
     @property
     def choices(self) -> list:
-        return [self.mapper(i) for i in self.keys() if isinstance(i, six.string_types)]
+        return [self.mapper(i) for i in self.keys()]
 
 
 class FuzzyDict(FuzzyBaseDict, dict):
@@ -182,7 +183,7 @@ class FuzzyList(FuzzyBase, list):
 
     @property
     def choices(self) -> list:
-        return [self.mapper(item) for item in self if isinstance(item, six.string_types)]
+        return [self.mapper(item) for item in self]
 
     def __getitem__(self, value):
         if not isinstance(value, six.string_types):

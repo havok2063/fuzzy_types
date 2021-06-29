@@ -19,6 +19,24 @@ from fuzzy_types.fuzzy import FuzzyList
 real = ['apple', 'banana', 'orange', 'pear']
 fuzzy = FuzzyList(real)
 
+class Toy(object):
+    """ class representing toy objects """
+    def __init__(self, name='toy'):
+        self.name = name
+        
+    def __repr__(self):
+        return f'<Toy({self.name})>'
+
+# create a fake list of toy objects
+toys = [Toy(n) for n in ['car', 'truck', 'top', 'ball', 'rag', 'doll']]
+
+
+class FuzzyToy(FuzzyList):
+    """ custom fuzzy toy class with overridden mapper method """    
+    @staticmethod
+    def mapper(item):
+        return str(item.name)
+
 
 def assert_exact(dd):
     assert 'apple' in dd
@@ -63,8 +81,22 @@ class TestList(object):
     def test_tooriginal(self):
         orig = fuzzy.to_original()
         assert isinstance(orig, list)
+        
+    def test_fuzzy_object_default_mapper(self):
+        fd = FuzzyList(toys)
+        assert 'car' in fd
+        assert 'car' not in fd.choices
+        assert fd[3] == toys[3]
+        assert fd.choices[0] == '<Toy(car)>'
 
-
+    def test_fuzzy_object_custom_mapper(self):
+        fd = FuzzyToy(toys)
+        assert 'car' in fd
+        assert 'car' in fd.choices
+        assert fd['car'] == toys[0]
+        assert fd[3] == toys[3]
+        assert fd.choices[0] == 'car'
+        assert fd['raagg'] == toys[4]
 class TestListFails(object):
 
     @pytest.mark.parametrize('item', [('mandarin'), ('apple')], ids=['noitem', 'fuzzyitem'])
