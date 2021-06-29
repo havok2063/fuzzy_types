@@ -19,6 +19,6 @@ NAME = 'fuzzy_types'
 
 config = get_config(NAME)
 
-__version__ = '0.1.3-alpha'
+__version__ = '0.1.3'
 
 from fuzzy_types.fuzzy import *
