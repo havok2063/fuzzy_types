@@ -56,7 +56,24 @@ class FuzzyBase(abc.ABC):
         return object.__dir__(self)
 
     @staticmethod
-    def mapper(item) -> str:
+    def mapper(item: Union[str, object]) -> str:
+        """ Mapper between list/dict item and rapidfuzz choices  
+
+        Static method used to map a list's items or dict's keys to a
+        string representation used by ``rapidfuzz`` for.  By default returns an
+        explicit string case of the item.  To see the output, view the ``choices``
+        property.  Can be overridden to customize what is input into ``rapidfuzz``. 
+
+        Parameters
+        ----------
+        item : Union[str, object]
+            Any iterable item, i.e. a list item or dictionary key
+
+        Returns
+        -------
+        str
+            The string representation to use in the choices supplied to ``rapidfuzz``
+        """
         return str(item)
 
     @abc.abstractproperty
@@ -117,6 +134,18 @@ class FuzzyBaseDict(FuzzyBase):
 
     @property
     def choices(self) -> list:
+        """ A list of choices used during fuzzy matching
+
+        The list of choices passes into ``rapidfuzz`` to use 
+        for fuzzy-matching a string.  The list of choices is computed
+        by iterating over the dictionary keys, passing each item through
+        the `~FuzzyBase.mapper` method. 
+
+        Returns
+        -------
+        list
+            The list of options used by ``rapidfuzz`` when fuzzy matching
+        """
         return [self.mapper(i) for i in self.keys()]
 
 
@@ -183,6 +212,18 @@ class FuzzyList(FuzzyBase, list):
 
     @property
     def choices(self) -> list:
+        """ A list of choices used during fuzzy matching
+
+        The list of choices passes into ``rapidfuzz`` to use 
+        for fuzzy-matching a string.  The list of choices is computed
+        by iterating over the list items, passing each item through
+        the `~FuzzyBase.mapper` method. 
+
+        Returns
+        -------
+        list
+            The list of options used by ``rapidfuzz`` when fuzzy matching
+        """
         return [self.mapper(item) for item in self]
 
     def __getitem__(self, value):
