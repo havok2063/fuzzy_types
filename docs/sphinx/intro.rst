@@ -124,4 +124,92 @@ You can convert a ``Fuzzy`` object back to its original type with `to_original` 
     >>> type(old)
     list
 
+Fuzzy Customizations
+--------------------
 
+All ``fuzzy_types`` use `~fuzzy_types.utils.get_best_fuzzy` to perform fuzzy matching, which 
+itself wraps the `.rapidfuzz.process.extract` function.  The default fuzzy-matching function can be 
+overridden in any ``fuzzy_types`` object, by passing a new callable function into the ``use_fuzzy`` 
+keyword argument.  
+
+The `.rapidfuzz.process.extract` function used by the default `~fuzzy_types.utils.get_best_fuzzy` 
+accepts as input a list of "choices", any iterable list of string used for comparison during fuzzy
+matching.  To see the list of choices used by any ``fuzzy_types``, access the ``choices`` property, 
+e.g. `.fuzzy_types.fuzzy.FuzzyList.choices` or `.fuzzy_types.fuzzy.FuzzyBaseDict.choices`.
+::
+
+    >>> from fuzzy_types import FuzzyList
+    >>> ll = FuzzyList(['apple', 'banana', 'orange', 'pear'])
+    >>>
+    >>> # look at the list of choices passed to rapidfuzz
+    >>> ll.choices
+    ['apple', 'banana', 'orange', 'pear']
+
+The mapping between the items in a ``FuzzyList`` or ``FuzzyDict``, and the list of ``choices`` passed 
+to ``rapidfuzz``, is controlled by the base `.fuzzy_types.fuzzy.FuzzyBase.mapper` method.  By default, 
+the ``mapper`` returns an explicit string of a list's items or dict's keys, i.e. ``str(item)``.  This
+means that by default, ``FuzzyList`` operates as a list of strings. 
+  
+The ``mapper`` method can be overridden to customize how the items in your input list or dict 
+get converted into a list of fuzzy options, e.g. creating a fuzzy list of objects where you want to
+perform fuzzy matching using an attribute of the instance.  Suppose we have a class representing a
+type of toy
+::
+
+    class Toy(object):
+        """ class representing toy objects """
+        def __init__(self, name='toy'):
+            self.name = name
+            
+        def __repr__(self):
+            return f'<Toy(name="{self.name}")>'
+
+And we have a list of toys that we want to convert to a fuzzy list. 
+::
+    
+    >>> # create a list of toy objects
+    >>> toys = [Toy(n) for n in ['car', 'truck', 'top', 'ball', 'rag', 'doll']]
+    >>> toys
+    [<Toy(name="car")>, <Toy(name="truck")>, <Toy(name="top")>, <Toy(name="ball")>, <Toy(name="rag")>, <Toy(name="doll")>]
+
+    >>> create a fuzzy list of toys
+    >>> tt = FuzzyList(toys)
+
+By default ``fuzzy_types`` will map each instance's string ``repr`` to the list of choices.  This may 
+not be ideal, or even desired, for complex reprs and could confuse the fuzzy matching.
+::
+
+    >>> # view the default choices passed to rapidfuzz
+    >>> tt.choices
+    ['<Toy(name="car")>', '<Toy(name="truck")>', '<Toy(name="top")>', '<Toy(name="ball")>', '<Toy(name="rag")>', '<Toy(name="doll")>']
+
+To instead customize the ``FuzzyList`` of ``Toys`` to use the ``name`` attribute for all fuzzy matching, 
+we can create a new custom ``FuzzyList`` class overriding the default ``mapper`` method.
+::
+
+    class FuzzyToy(FuzzyList):
+        """ custom fuzzy list for toys """
+
+        @staticmethod
+        def mapper(item):
+            """ overridden mapper to return the toy's name """
+            return str(item.name)
+
+Now we create a new list of ``FuzzyToy`` where the ``choices`` are mapped to the correct attribute 
+::
+
+    >>> # create a new fuzzy list of toys
+    >>> tt = FuzzyToy(toys)
+    >>> tt
+    [<Toy(name="car")>, <Toy(name="truck")>, <Toy(name="top")>, <Toy(name="ball")>, <Toy(name="rag")>, <Toy(name="doll")>]
+
+    >>> # view the fuzzy choices passed to rapidfuzz
+    >>> tt.choices
+    ['car', 'truck', 'top', 'ball', 'rag', 'doll']
+
+Overriding the ``mapper`` also controls what is shown as a dottable attribute.
+::
+
+    >>> # each Toy.name is added as a dottable attribute
+    >>> tt.doll
+    <Toy(name="doll")>

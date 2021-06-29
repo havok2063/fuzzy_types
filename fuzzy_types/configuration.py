@@ -10,12 +10,13 @@ import inspect
 import os
 import pathlib
 import yaml
+from typing import Union
 
 
 __all__ = ['read_yaml_file', 'merge_config', 'get_config']
 
 
-def read_yaml_file(path):
+def read_yaml_file(path: Union[str, pathlib.Path]) -> dict:
     """Read a YAML file and returns a dictionary."""
 
     if isinstance(path, (str, pathlib.Path)):
@@ -28,7 +29,7 @@ def read_yaml_file(path):
     return config
 
 
-def merge_config(user, default):
+def merge_config(user: dict, default: dict) -> dict:
     """Merges a user configuration with the default one."""
 
     if isinstance(user, dict) and isinstance(default, dict):
@@ -41,8 +42,8 @@ def merge_config(user, default):
     return user
 
 
-def get_config(name, config_file=None, allow_user=True, user_path=None,
-               config_envvar=None, merge_mode='update'):
+def get_config(name: str, config_file: str = None, allow_user: bool = True, 
+               user_path: str = None, config_envvar: str = None, merge_mode: str = 'update') -> dict:
     """Returns a configuration dictionary.
 
     The configuration dictionary is created by merging the default
